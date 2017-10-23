@@ -29,7 +29,7 @@ namespace WSFilms.Models.Metadata
 
 
         [Display(Name = "Password")]
-        [RegularExpression("^ (?=.*[0 - 9])(?=.*[a - z])(?=.*[A - Z])(?=.*[*.!@$%^ &(){}[]:;<>,.?/~_+-=|]).{6,10}$", ErrorMessage = "La longueur du prénom doit être entre 6 et 10 caractères dont au moins 1 majuscule, 1 chiffre et 1 caractère spécial")]
+        [RegularExpression("^ (?=.*[0 - 9])(?=.*[a - z])(?=.*[A - Z])(?=.*[*.!@$%^ &(){}[]:;<>,.?/~_+-=|]).{6,10}$", ErrorMessage = "La longueur du mot de passe doit être entre 6 et 10 caractères dont au moins 1 majuscule, 1 chiffre et 1 caractère spécial")]
         public string CPT_PWD { get; set; }
 
         [Display(Name = "Street")]

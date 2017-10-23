@@ -22,6 +22,7 @@ namespace WSFilms.Controllers
             return db.T_E_COMPTE_CPT;
         }
 
+
         // GET: api/Compte/5
         [ResponseType(typeof(T_E_COMPTE_CPT))]
         public IHttpActionResult GetCompte(int id)
