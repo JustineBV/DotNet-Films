@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FilmsAvis.Models.Entity.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="T_E_AVIS_AVI">
+          <Key>
+            <PropertyRef Name="CPT_ID" />
+            <PropertyRef Name="FLM_ID" />
+          </Key>
+          <Property Name="CPT_ID" Type="int" Nullable="false" />
+          <Property Name="FLM_ID" Type="int" Nullable="false" />
+          <Property Name="AVI_DATE" Type="datetime" Nullable="false" />
+          <Property Name="AVI_TITRE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AVI_DETAIL" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="AVI_NOTE" Type="numeric" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_E_COMPTE_CPT">
+          <Key>
+            <PropertyRef Name="CPT_ID" />
+          </Key>
+          <Property Name="CPT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CPT_NOM" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CPT_PRENOM" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CPT_TELPORTABLE" Type="char" MaxLength="10" />
+          <Property Name="CPT_MEL" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CPT_PWD" Type="varchar" MaxLength="64" />
+          <Property Name="CPT_RUE" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CPT_CP" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="CPT_VILLE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CPT_PAYS" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CPT_LATITUDE" Type="real" />
+          <Property Name="CPT_LONGITUDE" Type="real" />
+        </EntityType>
+        <EntityType Name="T_E_FILM_FLM">
+          <Key>
+            <PropertyRef Name="FLM_ID" />
+          </Key>
+          <Property Name="FLM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FLM_TITRE" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FLM_SYNOPSIS" Type="varchar" MaxLength="500" />
+          <Property Name="FLM_DATEPARUTION" Type="datetime" Nullable="false" />
+          <Property Name="FLM_DUREE" Type="numeric" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="FLM_GENRE" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FLM_URLPHOTO" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="T_J_FAVORI_FAV">
+          <Key>
+            <PropertyRef Name="CPT_ID" />
+            <PropertyRef Name="FLM_ID" />
+          </Key>
+          <Property Name="CPT_ID" Type="int" Nullable="false" />
+          <Property Name="FLM_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AVI_CPT">
+          <End Role="T_E_COMPTE_CPT" Type="Self.T_E_COMPTE_CPT" Multiplicity="1" />
+          <End Role="T_E_AVIS_AVI" Type="Self.T_E_AVIS_AVI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_E_COMPTE_CPT">
+              <PropertyRef Name="CPT_ID" />
+            </Principal>
+            <Dependent Role="T_E_AVIS_AVI">
+              <PropertyRef Name="CPT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AVI_FLM">
+          <End Role="T_E_FILM_FLM" Type="Self.T_E_FILM_FLM" Multiplicity="1" />
+          <End Role="T_E_AVIS_AVI" Type="Self.T_E_AVIS_AVI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_E_FILM_FLM">
+              <PropertyRef Name="FLM_ID" />
+            </Principal>
+            <Dependent Role="T_E_AVIS_AVI">
+              <PropertyRef Name="FLM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAV_CPT">
+          <End Role="T_E_COMPTE_CPT" Type="Self.T_E_COMPTE_CPT" Multiplicity="1" />
+          <End Role="T_J_FAVORI_FAV" Type="Self.T_J_FAVORI_FAV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_E_COMPTE_CPT">
+              <PropertyRef Name="CPT_ID" />
+            </Principal>
+            <Dependent Role="T_J_FAVORI_FAV">
+              <PropertyRef Name="CPT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAV_FLM">
+          <End Role="T_E_FILM_FLM" Type="Self.T_E_FILM_FLM" Multiplicity="1" />
+          <End Role="T_J_FAVORI_FAV" Type="Self.T_J_FAVORI_FAV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_E_FILM_FLM">
+              <PropertyRef Name="FLM_ID" />
+            </Principal>
+            <Dependent Role="T_J_FAVORI_FAV">
+              <PropertyRef Name="FLM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FilmsAvisModelsEntityStoreContainer">
+          <EntitySet Name="T_E_AVIS_AVI" EntityType="Self.T_E_AVIS_AVI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_E_COMPTE_CPT" EntityType="Self.T_E_COMPTE_CPT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_E_FILM_FLM" EntityType="Self.T_E_FILM_FLM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_J_FAVORI_FAV" EntityType="Self.T_J_FAVORI_FAV" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AVI_CPT" Association="Self.FK_AVI_CPT">
+            <End Role="T_E_COMPTE_CPT" EntitySet="T_E_COMPTE_CPT" />
+            <End Role="T_E_AVIS_AVI" EntitySet="T_E_AVIS_AVI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AVI_FLM" Association="Self.FK_AVI_FLM">
+            <End Role="T_E_FILM_FLM" EntitySet="T_E_FILM_FLM" />
+            <End Role="T_E_AVIS_AVI" EntitySet="T_E_AVIS_AVI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAV_CPT" Association="Self.FK_FAV_CPT">
+            <End Role="T_E_COMPTE_CPT" EntitySet="T_E_COMPTE_CPT" />
+            <End Role="T_J_FAVORI_FAV" EntitySet="T_J_FAVORI_FAV" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAV_FLM" Association="Self.FK_FAV_FLM">
+            <End Role="T_E_FILM_FLM" EntitySet="T_E_FILM_FLM" />
+            <End Role="T_J_FAVORI_FAV" EntitySet="T_J_FAVORI_FAV" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FilmsAvis.Models.Entity" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="T_E_AVIS_AVI">
+          <Key>
+            <PropertyRef Name="CPT_ID" />
+            <PropertyRef Name="FLM_ID" />
+          </Key>
+          <Property Name="CPT_ID" Type="Int32" Nullable="false" />
+          <Property Name="FLM_ID" Type="Int32" Nullable="false" />
+          <Property Name="AVI_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AVI_TITRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AVI_DETAIL" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AVI_NOTE" Type="Decimal" Precision="1" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Compte" Relationship="Self.FK_AVI_CPT" FromRole="T_E_AVIS_AVI" ToRole="T_E_COMPTE_CPT" />
+          <NavigationProperty Name="Film" Relationship="Self.FK_AVI_FLM" FromRole="T_E_AVIS_AVI" ToRole="T_E_FILM_FLM" />
+        </EntityType>
+        <EntityType Name="T_E_COMPTE_CPT">
+          <Key>
+            <PropertyRef Name="CPT_ID" />
+          </Key>
+          <Property Name="CPT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CPT_NOM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPT_PRENOM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPT_TELPORTABLE" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="CPT_MEL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPT_PWD" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="CPT_RUE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPT_CP" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CPT_VILLE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPT_PAYS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CPT_LATITUDE" Type="Single" />
+          <Property Name="CPT_LONGITUDE" Type="Single" />
+          <NavigationProperty Name="AvisCompte" Relationship="Self.FK_AVI_CPT" FromRole="T_E_COMPTE_CPT" ToRole="T_E_AVIS_AVI" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <NavigationProperty Name="FavorisCompte" Relationship="Self.T_J_FAVORI_FAV" FromRole="T_E_COMPTE_CPT" ToRole="T_E_FILM_FLM" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+        </EntityType>
+        <EntityType Name="T_E_FILM_FILM">
+          <Key>
+            <PropertyRef Name="FLM_ID" />
+          </Key>
+          <Property Name="FLM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FLM_TITRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FLM_SYNOPSIS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FLM_DATEPARUTION" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FLM_DUREE" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="FLM_GENRE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FLM_URLPHOTO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AvisFilm" Relationship="Self.FK_AVI_FLM" FromRole="T_E_FILM_FLM" ToRole="T_E_AVIS_AVI" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <NavigationProperty Name="FavorisFilm" Relationship="Self.T_J_FAVORI_FAV" FromRole="T_E_FILM_FLM" ToRole="T_E_COMPTE_CPT" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+        </EntityType>
+        <Association Name="FK_AVI_CPT">
+          <End Role="T_E_COMPTE_CPT" Type="Self.T_E_COMPTE_CPT" Multiplicity="1" />
+          <End Role="T_E_AVIS_AVI" Type="Self.T_E_AVIS_AVI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_E_COMPTE_CPT">
+              <PropertyRef Name="CPT_ID" />
+            </Principal>
+            <Dependent Role="T_E_AVIS_AVI">
+              <PropertyRef Name="CPT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AVI_FLM">
+          <End Role="T_E_FILM_FLM" Type="FilmsAvis.Models.Entity.T_E_FILM_FILM" Multiplicity="1" />
+          <End Role="T_E_AVIS_AVI" Type="Self.T_E_AVIS_AVI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_E_FILM_FLM">
+              <PropertyRef Name="FLM_ID" />
+            </Principal>
+            <Dependent Role="T_E_AVIS_AVI">
+              <PropertyRef Name="FLM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="T_J_FAVORI_FAV">
+          <End Role="T_E_COMPTE_CPT" Type="Self.T_E_COMPTE_CPT" Multiplicity="*" />
+          <End Role="T_E_FILM_FLM" Type="FilmsAvis.Models.Entity.T_E_FILM_FILM" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BDFilmsAvisContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="T_E_AVIS_AVI" EntityType="Self.T_E_AVIS_AVI" />
+          <EntitySet Name="T_E_COMPTE_CPT" EntityType="Self.T_E_COMPTE_CPT" />
+          <EntitySet Name="T_E_FILM_FILM" EntityType="FilmsAvis.Models.Entity.T_E_FILM_FILM" />
+          <AssociationSet Name="FK_AVI_CPT" Association="Self.FK_AVI_CPT">
+            <End Role="T_E_COMPTE_CPT" EntitySet="T_E_COMPTE_CPT" />
+            <End Role="T_E_AVIS_AVI" EntitySet="T_E_AVIS_AVI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AVI_FLM" Association="Self.FK_AVI_FLM">
+            <End Role="T_E_FILM_FLM" EntitySet="T_E_FILM_FILM" />
+            <End Role="T_E_AVIS_AVI" EntitySet="T_E_AVIS_AVI" />
+          </AssociationSet>
+          <AssociationSet Name="T_J_FAVORI_FAV" Association="Self.T_J_FAVORI_FAV">
+            <End Role="T_E_COMPTE_CPT" EntitySet="T_E_COMPTE_CPT" />
+            <End Role="T_E_FILM_FLM" EntitySet="T_E_FILM_FILM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FilmsAvisModelsEntityStoreContainer" CdmEntityContainer="BDFilmsAvisContext">
+          <EntitySetMapping Name="T_E_AVIS_AVI">
+            <EntityTypeMapping TypeName="FilmsAvis.Models.Entity.T_E_AVIS_AVI">
+              <MappingFragment StoreEntitySet="T_E_AVIS_AVI">
+                <ScalarProperty Name="CPT_ID" ColumnName="CPT_ID" />
+                <ScalarProperty Name="FLM_ID" ColumnName="FLM_ID" />
+                <ScalarProperty Name="AVI_DATE" ColumnName="AVI_DATE" />
+                <ScalarProperty Name="AVI_TITRE" ColumnName="AVI_TITRE" />
+                <ScalarProperty Name="AVI_DETAIL" ColumnName="AVI_DETAIL" />
+                <ScalarProperty Name="AVI_NOTE" ColumnName="AVI_NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_E_COMPTE_CPT">
+            <EntityTypeMapping TypeName="FilmsAvis.Models.Entity.T_E_COMPTE_CPT">
+              <MappingFragment StoreEntitySet="T_E_COMPTE_CPT">
+                <ScalarProperty Name="CPT_ID" ColumnName="CPT_ID" />
+                <ScalarProperty Name="CPT_NOM" ColumnName="CPT_NOM" />
+                <ScalarProperty Name="CPT_PRENOM" ColumnName="CPT_PRENOM" />
+                <ScalarProperty Name="CPT_TELPORTABLE" ColumnName="CPT_TELPORTABLE" />
+                <ScalarProperty Name="CPT_MEL" ColumnName="CPT_MEL" />
+                <ScalarProperty Name="CPT_PWD" ColumnName="CPT_PWD" />
+                <ScalarProperty Name="CPT_RUE" ColumnName="CPT_RUE" />
+                <ScalarProperty Name="CPT_CP" ColumnName="CPT_CP" />
+                <ScalarProperty Name="CPT_VILLE" ColumnName="CPT_VILLE" />
+                <ScalarProperty Name="CPT_PAYS" ColumnName="CPT_PAYS" />
+                <ScalarProperty Name="CPT_LATITUDE" ColumnName="CPT_LATITUDE" />
+                <ScalarProperty Name="CPT_LONGITUDE" ColumnName="CPT_LONGITUDE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_E_FILM_FILM">
+            <EntityTypeMapping TypeName="FilmsAvis.Models.Entity.T_E_FILM_FILM">
+              <MappingFragment StoreEntitySet="T_E_FILM_FLM">
+                <ScalarProperty Name="FLM_ID" ColumnName="FLM_ID" />
+                <ScalarProperty Name="FLM_TITRE" ColumnName="FLM_TITRE" />
+                <ScalarProperty Name="FLM_SYNOPSIS" ColumnName="FLM_SYNOPSIS" />
+                <ScalarProperty Name="FLM_DATEPARUTION" ColumnName="FLM_DATEPARUTION" />
+                <ScalarProperty Name="FLM_DUREE" ColumnName="FLM_DUREE" />
+                <ScalarProperty Name="FLM_GENRE" ColumnName="FLM_GENRE" />
+                <ScalarProperty Name="FLM_URLPHOTO" ColumnName="FLM_URLPHOTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="T_J_FAVORI_FAV" TypeName="FilmsAvis.Models.Entity.T_J_FAVORI_FAV" StoreEntitySet="T_J_FAVORI_FAV">
+            <EndProperty Name="T_E_COMPTE_CPT">
+              <ScalarProperty Name="CPT_ID" ColumnName="CPT_ID" />
+            </EndProperty>
+            <EndProperty Name="T_E_FILM_FLM">
+              <ScalarProperty Name="FLM_ID" ColumnName="FLM_ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
