@@ -37,6 +37,11 @@ namespace WSFilms.Controllers
         }
 
 
+        /// <summary>
+        /// GET : api/Compte?email={email}
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>IHttpActionResult</returns>
         public IHttpActionResult GetCompte(string email)
         {
             T_E_COMPTE_CPT t_E_COMPTE_CPT = (from x in db.T_E_COMPTE_CPT
@@ -48,7 +53,6 @@ namespace WSFilms.Controllers
             }
 
             return Ok(t_E_COMPTE_CPT);
-
         }
 
 

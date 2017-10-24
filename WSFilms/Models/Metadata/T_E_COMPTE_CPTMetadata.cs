@@ -18,11 +18,12 @@ namespace WSFilms.Models.Metadata
         [RegularExpression(@"^0[0-9]{9}$", ErrorMessage = "Le téléphone portable doit contenir 10 chiffres")]
         public string CPT_TELPORTABLE { get; set; }
 
-
+        [Required]
         [Display(Name = "Firstname")]
         [RegularExpression(@"^[A-Za-z]{1,50}$", ErrorMessage = "La longueur du prénom doit être entre 1 et 50 lettres")]
         public string CPT_PRENOM { get; set; }
 
+        [Required]
         [Display(Name = "Name")]
         [RegularExpression(@"^[A-Za-z]{1,50}$", ErrorMessage = "La longueur du nom doit être entre 1 et 50 lettres")]
         public string CPT_NOM { get; set; }
