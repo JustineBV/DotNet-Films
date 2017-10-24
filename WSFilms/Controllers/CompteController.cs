@@ -103,8 +103,7 @@ namespace WSFilms.Controllers
             return CreatedAtRoute("DefaultApi", new { id = t_E_COMPTE_CPT.CPT_ID }, t_E_COMPTE_CPT);
         }
 
-
-        /*
+        
         // DELETE: api/Compte/5
         [ResponseType(typeof(T_E_COMPTE_CPT))]
         public IHttpActionResult DeleteCompte(int id)
@@ -120,7 +119,6 @@ namespace WSFilms.Controllers
 
             return Ok(t_E_COMPTE_CPT);
         }
-        */
 
 
         protected override void Dispose(bool disposing)

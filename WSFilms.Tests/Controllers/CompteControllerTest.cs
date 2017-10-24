@@ -59,18 +59,19 @@ namespace WSFilms.Tests.Controllers
         {
             // Act
             IQueryable<T_E_COMPTE_CPT> result = controller.GetCompte();
+            T_E_COMPTE_CPT test = result.FirstOrDefault();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.ElementAt(0).CPT_ID);
-            Assert.AreEqual("DURAND", result.ElementAt(0).CPT_NOM);
-            Assert.AreEqual("Paul", result.ElementAt(0).CPT_PRENOM);
+            Assert.AreEqual(1, test.CPT_ID);
+            Assert.AreEqual("DURAND", test.CPT_NOM);
+            Assert.AreEqual("Paul", test.CPT_PRENOM);
             //Les autres parties de l'enregistrement devrait être testés
         }
 
 
         [TestMethod]
-        public void GetCompte(int id)
+        public void GetCompteId()
         {
             // Act
             IHttpActionResult result = controller.GetCompte(idTest);
@@ -86,12 +87,12 @@ namespace WSFilms.Tests.Controllers
             //Les autres parties de l'enregistrement devrait être testés
 
             Assert.IsInstanceOfType(resultFalse, typeof(NotFoundResult));
-            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<TestCategoryAttribute>));
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<T_E_COMPTE_CPT>));
         }
 
 
         [TestMethod]
-        public void GetCompte(string email)
+        public void GetCompteMail()
         {
 
             // Act
@@ -109,53 +110,71 @@ namespace WSFilms.Tests.Controllers
             //Les autres parties de l'enregistrement devrait être testés
 
             Assert.IsInstanceOfType(resultFalse, typeof(NotFoundResult));
-            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<TestCategoryAttribute>));
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<T_E_COMPTE_CPT>));
         }
 
-        public void PutCompte(int id, T_E_COMPTE_CPT t_E_COMPTE_CPT)
+
+        [TestMethod]
+        public void PutCompte()
         {
 
             // Act
-            IHttpActionResult result = controller.PutCompte(2, cptTest);
-            IHttpActionResult resultFalse = controller.PutCompte(-1, new T_E_COMPTE_CPT());
-            cptTest.CPT_ID = -1;
-            IHttpActionResult resultFalse2 = controller.PutCompte(-1, new T_E_COMPTE_CPT());
-            cptTest.CPT_ID = 2;
-            cptTest.CPT_NOM = "BliBli";
-            var resultVar = controller.PutCompte(2, cptTest) as OkNegotiatedContentResult<T_E_COMPTE_CPT>;
+            var toUpdated = controller.GetCompte(2) as OkNegotiatedContentResult<T_E_COMPTE_CPT>;
+            string toUpdatedName = toUpdated.Content.CPT_NOM;
+            IHttpActionResult resultFalse = controller.PutCompte(-1, cptTest);
+            toUpdated.Content.CPT_NOM = "Bloblo";
+            IHttpActionResult result = controller.PutCompte(2, toUpdated.Content);
+
+
+
+            var resultList = controller.GetCompte(2) as OkNegotiatedContentResult<T_E_COMPTE_CPT>;
 
 
             // Assert
-            Assert.IsNotNull(result);
             Assert.IsInstanceOfType(resultFalse, typeof(BadRequestResult));
-            Assert.IsInstanceOfType(resultFalse2, typeof(NotFoundResult));
             Assert.IsInstanceOfType(result, typeof(StatusCodeResult));
 
-            Assert.AreEqual(2, resultVar.Content.CPT_ID);
-            Assert.AreEqual("Bla", resultVar.Content.CPT_NOM);
-            Assert.AreEqual("Blabla", resultVar.Content.CPT_PRENOM);
+            Assert.AreEqual(toUpdated.Content.CPT_ID, 2);
+            Assert.AreEqual(toUpdated.Content.CPT_NOM, resultList.Content.CPT_NOM);
+            Assert.AreEqual(toUpdated.Content.CPT_PRENOM, resultList.Content.CPT_PRENOM);
             //Les autres parties de l'enregistrement devrait être testés
 
             controller.ModelState.AddModelError("Error", "Error");
             var response = controller.PutCompte(2, cptTest);
             Assert.IsInstanceOfType(response, typeof(InvalidModelStateResult));
 
+            //On remet l'enregistrement comme au départ pour pouvoir refaire les tests
+            toUpdated.Content.CPT_NOM = toUpdatedName;
+            controller.PutCompte(2, toUpdated.Content);
+
         }
 
 
-        public void PostCompte(T_E_COMPTE_CPT t_E_COMPTE_CPT)
+        [TestMethod]
+        public void PostCompte()
         {
             IQueryable<T_E_COMPTE_CPT> listeCpt = controller.GetCompte();
 
             int num = listeCpt.Count();
             cptTest.CPT_NOM = "Olala";
             cptTest.CPT_MEL = "Olala@gmail.com";
-            controller.PostCompte(cptTest);
-            Assert.AreEqual(num, listeCpt.Count());
-            Assert.AreEqual(listeCpt.ElementAt(listeCpt.Count()), cptTest);
+
+            var resultVar = controller.PostCompte(cptTest);
+            T_E_COMPTE_CPT last = listeCpt.OrderByDescending(o => o.CPT_ID).FirstOrDefault();
+
+
+
+            //Assert
+            Assert.AreEqual(num+1, listeCpt.Count());
+            Assert.AreEqual(last.CPT_NOM, cptTest.CPT_NOM);
+            // Les champs devraient être vérifiés à  l'aide d'un equals() pour être sûre
+
             controller.ModelState.AddModelError("Error", "Error");
             var response = controller.PutCompte(2, cptTest);
             Assert.IsInstanceOfType(response, typeof(InvalidModelStateResult));
+
+
+            controller.DeleteCompte(last.CPT_ID);
 
         }
 
